@@ -14,7 +14,7 @@ namespace ConfigFixer
                 Console.WriteLine("Desired environment configuration -> " + SrcConfig);
                 ZipArchiveEntry entryToCopy = archive.Entries.Where(x => x.Name == SrcConfig).FirstOrDefault();
                 if (entryToCopy == null) { throw new Exception("ZIP does not contains environment source file"); }
-                var entryToDelete = archive.Entries.Where(x => x.Name == DestConfig).Last();
+                var entryToDelete = archive.Entries.Where(x => x.Name == DestConfig).LastOrDefault();
                 if (entryToDelete != null) { entryToDelete.Delete(); }
                 var entryTomod = archive.CreateEntry(DestConfig);
                 Console.WriteLine("Copy config from -> " + SrcConfig + " to " + entryTomod.Name);
