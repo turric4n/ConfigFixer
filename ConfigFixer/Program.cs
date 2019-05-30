@@ -12,9 +12,25 @@ namespace ConfigFixer
             using (var archive = new ZipArchive(File.Open(ZipPath, FileMode.Open, FileAccess.ReadWrite), ZipArchiveMode.Update))
             {
                 Console.WriteLine("Desired environment configuration -> " + SrcConfig);
-                ZipArchiveEntry entryToCopy = archive.Entries.Where(x => x.Name == SrcConfig).FirstOrDefault();
-                if (entryToCopy == null) { throw new Exception("ZIP does not contains environment source file"); }
-                var entryToDelete = archive.Entries.Where(x => x.Name == DestConfig).LastOrDefault();
+                ZipArchiveEntry entryToCopy = null;
+                ZipArchiveEntry entryToDelete = null;
+                if (SrcConfig.Contains("\\") || SrcConfig.Contains("/"))
+                {
+                    SrcConfig = SrcConfig.Replace("\\", "/");
+                    if (SrcConfig.StartsWith("/")) { SrcConfig = SrcConfig.Substring(1); };
+                    entryToCopy = archive.Entries.Where(x => x.FullName == SrcConfig).FirstOrDefault();
+                    if (entryToCopy == null) { throw new Exception("ZIP does not contains environment source path file"); }
+                    DestConfig = DestConfig.Replace("\\", "/");
+                    if (DestConfig.StartsWith("/")) { DestConfig = DestConfig.Substring(1); };
+                    entryToDelete = archive.Entries.Where(x => x.FullName == DestConfig).FirstOrDefault();
+                }
+                else
+                {
+                    entryToCopy = archive.Entries.Where(x => x.Name == SrcConfig).FirstOrDefault();
+                    if (entryToCopy == null) { throw new Exception("ZIP does not contains environment source file"); }
+                    entryToDelete = archive.Entries.Where(x => x.Name == DestConfig).LastOrDefault();
+                }
+                
                 if (entryToDelete != null) { entryToDelete.Delete(); }
                 var entryTomod = archive.CreateEntry(DestConfig);
                 Console.WriteLine("Copy config from -> " + SrcConfig + " to " + entryTomod.Name);
