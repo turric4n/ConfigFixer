@@ -6,7 +6,8 @@ namespace ConfigFixerByEnv
     {
         public static string GetCurrentEnvironment(string envName)
         {
-            return Environment.GetEnvironmentVariable(envName);
+            if (!string.IsNullOrEmpty(envName)) return Environment.GetEnvironmentVariable(envName);
+            else return string.Empty;
         }
     }
 }
