@@ -1,20 +1,55 @@
-#Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Application config environment fixer for Windows.
 
-#Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+PROS :
 
-#Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+- Works with zip files
+- Works with multiple environments
 
-#Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+CONS :
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://www.visualstudio.com/en-us/docs/git/create-a-readme). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- Depends of .net core 3
+
+Example :
+
+We want to deploy into multiple environments, but our application behaviour is to load config.yml and doesn't know anything about environment...
+
+So we will need the following to work with :
+
+1. Config files for each environment :
+
+  - Test (config.test.yml)
+  - Production (config.pro.yml)
+  - Production2 (config.pro2.yml)
+
+2. ConfigFixerByEnv executable
+
+3. Set your environment switch into your OS like - set ENVIRONMENT=Test 
+
+4. The next command line :                     
+
+ConfigFixerByEnv.exe -s "config" -e "ENVIRONMENT" -r ".yml" -l "." -d "config.yml"
+
+----------------------------------------------------------------------------------
+
+Modifiers : 
+
+// Delete destination if exists
+-m (Additional)
+// Source configuration file name
+-s (Mandatory)
+// Destination file path
+-d (Mandatory)  
+//Environment variable
+-e (Mandatory)  
+// First additional environment variable
+-t (Additional)
+// Second additional environment variable
+-x (Additional)
+// Environment variables to file separator 
+-l (Mandatory)
+// Destination File extension 
+-r (Additional)
+
+
+
+	
